@@ -1,0 +1,22 @@
+{{ $global := . }}
+{{ range .Values.applications -}}
+{{ $application := . }}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $application.image.type }}-service
+  namespace: {{ $global.Release.Namespace }}
+spec:
+  ports:
+  - port: {{ $application.service.port }}
+    targetPort: {{ $application.service.port }}
+    name: {{ $application.service.scheme }}
+  type: {{ $application.service.type }}
+  selector:
+    app: demo-api-cluster-{{ $application.image.name }}
+    chart: "{{ $global.Chart.Name }}-{{ $global.Chart.Version }}"
+    release: "{{ $global.Release.Name }}"   
+
+---
+{{ end -}}

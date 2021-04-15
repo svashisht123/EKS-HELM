@@ -1,0 +1,37 @@
+{{ $global := . }}
+{{ range .Values.applications -}}
+{{ $application := . }}
+{{- $tags := $.Files.Get "values.yaml" | fromYaml }}
+{{ $imgname := $application.image.name -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-api-cluster-{{ $application.image.name }}-deployment
+  namespace: {{ $global.Release.Namespace }}
+  labels:
+    app: demo-api-cluster-{{ $application.image.name }}
+    chart: "{{ $global.Chart.Name }}-{{ $global.Chart.Version }}"
+    release: "{{ $global.Release.Name }}"   
+spec:
+  replicas: {{ $application.replicas }}
+  selector:
+    matchLabels:
+      app: demo-api-cluster-{{ $application.image.name }}
+      chart: "{{ $global.Chart.Name }}-{{ $global.Chart.Version }}"
+      release: "{{ $global.Release.Name }}"
+  template:
+    metadata:
+      labels:
+        app: demo-api-cluster-{{ $application.image.name }}
+        chart: "{{ $global.Chart.Name }}-{{ $global.Chart.Version }}"
+        release: "{{ $global.Release.Name }}"      
+    spec:
+      containers:
+      - name: demo-api-cluster-{{ $application.image.name }}
+        image: "{{ $application.image.repository }}/{{ $application.image.name }}:{{ $application.image.tag }}"
+        imagePullPolicy: {{ $application.image.pullPolicy }}
+        ports:
+        - containerPort: {{ $application.service.port }}
+
+---
+{{ end -}}
