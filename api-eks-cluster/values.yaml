@@ -8,9 +8,9 @@ env: dev
 #########################################################
 fullnameOverride: demoapi
 
-#dns:
-#  hostname: api-demo.mirademo.com
-#  certificateARN: arn:aws:acm:eu-west-1:835483671006:certificate/94e78a84-f644-4605-a77a-b910a545f793
+dns:
+  hostname: api-demo.mirademo.com
+  certificateARN: arn:aws:acm:eu-west-1:754180621461:certificate/208ef021-ddfb-44d0-a01f-ade0be7bd9f9
 
 applications:
 
@@ -35,4 +35,4 @@ applications:
     service:
       port: 5000
       scheme: http
-      type: ClusterIP 
+      type: NodePort
