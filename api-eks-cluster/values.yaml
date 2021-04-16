@@ -21,7 +21,7 @@ applications:
     image: 
       repository: 754180621461.dkr.ecr.eu-west-1.amazonaws.com
       name: app
-      tag : "latest"
+      tag : "myimage"
       type: python 
       pullPolicy: IfNotPresent 
     resources:
